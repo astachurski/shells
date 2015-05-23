@@ -1,28 +1,29 @@
 #!/bin/sh
 
-clear
-
-echo "installing java runtime..."
-
+BASE_FILE_PATH=/vagrant/files
+JAVA_VERSION=7u80-linux-i586
+JAVAFILE=${BASE_FILE_PATH}/jre-${JAVA_VERSION}.tar.gz
 sudo apt-get update
-sudo apt-get install openjdk-7-jre-headless
+sudo apt-get install -y -q unzip
+sudo apt-get install -y -q openjdk-7-jre-headless
 
-latest_go_agent_name=go-agent-15.1.0-1863.deb
-latest_go_agent_location=http://dl.bintray.com/gocd/gocd-deb/
-latest_go_agent_fname=$latest_go_agent_location$latest_go_agent_name
+#if [ -e $JAVAFILE ]; then
+#    echo "ok, ${JAVAFILE} exists"
+#    tar -xzf ${JAVAFILE} -C /opt
+#    sudo  update-alternatives --install /usr/bin/java java /opt/jre1.7.0_80/bin/java 100
+#fi
 
-echo "gocd agent source location is:" $latest_go_agent_location
-echo "gocd agent version is:" $latest_go_agent_name
-echo "fname:" $latest_go_agent_fname
+GO_SERVER_VERSION=15.1.0-1863
+SERVERFILE=${BASE_FILE_PATH}/go-server-${GO_SERVER_VERSION}.deb
 
-echo "downloading go client package"
+GO_AGENT_VERSION=15.1.0-1863
+AGENTFILE=${BASE_FILE_PATH}/go-agent-${GO_AGENT_VERSION}.deb
 
-wget $latest_go_agent_fname
+#if [ -e $SERVERFILE ]; then
+#    echo "ok, $SERVERFILE exists"
+#    sudo dpkg -i ${SERVERFILE}
+#fi
 
-echo "installing unzip"
-
-sudo apt-get install unzip
-
-echo "installing go-agent"
-
-sudo dpkg -i $latest_go_agent_name
+if [ -e "$AGENTFILE" ]; then
+    sudo dpkg -i $AGENTFILE
+fi
